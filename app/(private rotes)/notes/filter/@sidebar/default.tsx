@@ -1,7 +1,6 @@
-
-import Link from 'next/link';
-import css from './SidebarNotes.module.css'; 
-import { tags } from '../../../constants/constants';
+import Link from "next/link"
+import css from "./SidebarNotes.module.css"
+import { tags } from "../../../../constants/constants"
 
 export default function SidebarNotes() {
   return (
@@ -14,5 +13,5 @@ export default function SidebarNotes() {
         </li>
       ))}
     </ul>
-  );
+  )
 }
