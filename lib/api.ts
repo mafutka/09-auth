@@ -7,11 +7,13 @@ export type FetchNotesResponse = {
   totalPages: number
   tag: string
 }
+
 export type NewNoteData = {
   title: string
   content: string
   tag: string
 }
+
 export type Category = {
   id: string
   name: string
@@ -38,6 +40,7 @@ export const nextServer = axios.create({
   baseURL: "http://localhost:3000/api",
   withCredentials: true,
 })
+
 const myToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN
 
 export const fetchNotes = async (
@@ -48,10 +51,7 @@ export const fetchNotes = async (
 ): Promise<FetchNotesResponse> => {
   const params: Record<string, string | number> = { page, perPage }
 
-  if (search.trim() !== "") {
-    params.search = search.trim()
-  }
-
+  if (search.trim() !== "") params.search = search.trim()
   if (tag.trim().toLowerCase() !== "all" && tag.trim() !== "") {
     params.tag = tag.trim()
   }
@@ -76,7 +76,6 @@ export const createNote = async (note: {
       Authorization: `Bearer ${myToken}`,
     },
   })
-
   return res.data
 }
 
@@ -86,7 +85,6 @@ export const deleteNote = async (id: number): Promise<Note> => {
       Authorization: `Bearer ${myToken}`,
     },
   })
-
   return res.data
 }
 
