@@ -1,9 +1,10 @@
 import css from "./Header.module.css";
-import Link from 'next/link';
+import Link from "next/link";
 import TagsMenu from "../TagsMenu/TagsMenu";
 
 const Header = () => {
-    return <header className={css.header}>
+  return (
+    <header className={css.header}>
       <Link href="/" aria-label="Home">
         NoteHub
       </Link>
@@ -12,11 +13,20 @@ const Header = () => {
           <li>
             <Link href="/">Home</Link>
           </li>
-          < TagsMenu />
+          <li>
+            <Link href="/profile">Profile</Link>
+          </li>
+          <li>
+            <Link href="/sign-in">Login</Link>
+          </li>
+          <li>
+            <Link href="/sign-up">Register</Link>
+          </li>
+          <TagsMenu />
         </ul>
       </nav>
-
     </header>
-}
+  );
+};
 
 export default Header;
