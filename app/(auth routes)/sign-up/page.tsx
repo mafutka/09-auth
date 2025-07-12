@@ -1,49 +1,73 @@
 "use client"
 
-import type { RegisterRequest } from "lib/api"
-import { Register as register } from "lib/api"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { register } from "../../../lib/api/clientApi"
+import type { RegisterRequest } from "../../../types/user"
 import css from "./SignUpPage.module.css"
 
-const Register = () => {
-  const handleRegister = async (formData: FormData) => {
-    console.log("formData", formData)
-    const payload = Object.fromEntries(formData) as RegisterRequest
-    const res = await register(payload)
+export default function SignUpPage() {
+  const [error, setError] = useState("")
+  const router = useRouter()
 
-    console.log("res", res)
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+
+    const payload: RegisterRequest = {
+      username: formData.get("username") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    }
+
+    try {
+      await register(payload) // cookies будуть збережені завдяки withCredentials
+      router.push("/profile")
+    } catch (err) {
+      console.error("Registration error", err)
+      setError("Registration failed. Please try again.")
+    }
   }
+
   return (
-    <form className={css.form} action={handleRegister}>
-      <h2>Sign up</h2>
-      <label htmlFor="username">Name</label>
-      <input
-        className={css.input}
-        type="text"
-        name="username"
-        placeholder="Username"
-        required
-      />
-      <label htmlFor="email">Email</label>
-      <input
-        className={css.input}
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-      />
-      <label htmlFor="Password">Password</label>
-      <input
-        className={css.input}
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-      />
-      <button className={css.submitButton} type="submit">
-        Register
-      </button>
-    </form>
+    <main className={css.mainContent}>
+      <h1 className={css.formTitle}>Sign up</h1>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <div className={css.formGroup}>
+          <label htmlFor="username">Name</label>
+          <input id="username" name="username" className={css.input} required />
+        </div>
+
+        <div className={css.formGroup}>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            className={css.input}
+            required
+          />
+        </div>
+
+        <div className={css.formGroup}>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            className={css.input}
+            required
+          />
+        </div>
+
+        <div className={css.actions}>
+          <button type="submit" className={css.submitButton}>
+            Register
+          </button>
+        </div>
+
+        {error && <p className={css.error}>{error}</p>}
+      </form>
+    </main>
   )
 }
-
-export default Register

@@ -1,6 +1,9 @@
-import css from "./Header.module.css";
-import Link from "next/link";
-import TagsMenu from "../TagsMenu/TagsMenu";
+"use client"
+
+import css from "./Header.module.css"
+import Link from "next/link"
+import TagsMenu from "../TagsMenu/TagsMenu"
+import AuthNavigation from "components/AuthNavigation/AuthNavigation"
 
 const Header = () => {
   return (
@@ -13,20 +16,18 @@ const Header = () => {
           <li>
             <Link href="/">Home</Link>
           </li>
-          <li>
-            <Link href="/profile">Profile</Link>
-          </li>
-          <li>
-            <Link href="/sign-in">Login</Link>
-          </li>
-          <li>
-            <Link href="/sign-up">Register</Link>
-          </li>
+          <AuthNavigation
+            isAuthenticated={true}
+            // userEmail="user@example.com"
+            onLogout={() => {
+              console.log("Logging out...")
+            }}
+          />
           <TagsMenu />
         </ul>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

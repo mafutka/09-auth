@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query"
-import { fetchNotes } from "../../../../../lib/api"
+import { fetchNotes } from "../../../../../lib/api/serverApi"
 import NotesClient from "./Notes.client"
 
 import type { Metadata } from "next"
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `Note: ${tag}`,
       description: `Notes are sorted by ${tag}`,
-      url: `https://notehub.app/notes/filter/${(await params).slug.join("/")}`,
+      // url: `https://notehub.app/notes/filter/${(await params).slug.join("/")}`,
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
@@ -56,7 +56,3 @@ export default async function NotesPage({ params }: Props) {
     </HydrationBoundary>
   )
 }
-
-// Повернутий об'єкт метаданих з generateMetadata не містить обов'язкової властивості
-// openGraph з вкладеними полями (title, description, url та images).
-// Ця відсутність означає, що метадані неповні і не повністю відповідають вимогам SEO та соціального поширення.

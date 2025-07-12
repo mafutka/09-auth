@@ -1,36 +1,68 @@
 "use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { login } from "../../../lib/api/clientApi"
+import type { LoginRequest } from "../../../types/user"
 import css from "./SignInPage.module.css"
 
-const Login = () => {
-  const handleLogin = (formData: FormData) => {
-    console.log("formData", formData)
+export default function SignInPage() {
+  const [error, setError] = useState("")
+  const router = useRouter()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+
+    const payload: LoginRequest = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    }
+
+    try {
+      await login(payload)
+      router.push("/profile")
+    } catch (err) {
+      console.error("Login error", err)
+      setError("Login failed. Please check your credentials.")
+    }
   }
+
   return (
-    <form action={handleLogin} className={css.form}>
-      <h2 className={css.formTitle}>Sign in</h2>
+    <main className={css.mainContent}>
+      <form className={css.form} onSubmit={handleSubmit}>
+        <h1 className={css.formTitle}>Sign in</h1>
 
-      <label htmlFor="email">Email</label>
-      <input
-        className={css.input}
-        type="email"
-        name="email"
-        placeholder="Email"
-        required
-      />
-      <label htmlFor="Password">Password</label>
-      <input
-        className={css.input}
-        type="password"
-        name="password"
-        placeholder="Password"
-        required
-      />
+        <div className={css.formGroup}>
+          <label htmlFor="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            className={css.input}
+            required
+          />
+        </div>
 
-      <button className={css.submitButton} type="submit">
-        Login
-      </button>
-    </form>
+        <div className={css.formGroup}>
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            className={css.input}
+            required
+          />
+        </div>
+
+        <div className={css.actions}>
+          <button type="submit" className={css.submitButton}>
+            Log in
+          </button>
+        </div>
+
+        {error && <p className={css.error}>{error}</p>}
+      </form>
+    </main>
   )
 }
-
-export default Login
