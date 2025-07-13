@@ -1,13 +1,6 @@
-import axios from "axios"
 import type { Note } from "../../types/note"
 import type { User, RegisterRequest } from "../../types/user"
-
-const baseURL = process.env.NEXT_PUBLIC_API_URL + "/api"
-
-export const nextServer = axios.create({
-  baseURL,
-  withCredentials: true,
-})
+import { nextServer } from "./api"
 
 export type FetchNotesResponse = {
   notes: Note[]

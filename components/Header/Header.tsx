@@ -17,10 +17,10 @@ const Header = () => {
             <Link href="/">Home</Link>
           </li>
           <AuthNavigation
-            isAuthenticated={true}
+            isAuthenticated={false}
             // userEmail="user@example.com"
             onLogout={() => {
-              console.log("Logging out...")
+              console.log("Logging out")
             }}
           />
           <TagsMenu />

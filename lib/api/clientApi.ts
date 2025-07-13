@@ -1,5 +1,5 @@
-import { api } from "./api"
 import type { RegisterRequest, User, LoginRequest } from "../../types/user"
+import { nextServer as api } from "./api"
 
 export const register = async (payload: RegisterRequest): Promise<User> => {
   const res = await api.post("/auth/register", payload)
