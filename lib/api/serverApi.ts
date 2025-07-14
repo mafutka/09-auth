@@ -1,12 +1,17 @@
-import type { Note, FetchNotesResponse, NewNoteData } from "../../types/note"
-// import type { User, RegisteredUser } from "../../types/user"
+import type { Note, FetchNotesResponse } from "../../types/note"
+import type { User } from "../../types/user"
 import { cookies } from "next/headers"
 // import { CreateUserData} from
 import { nextServer as api } from "./api"
 
-export type Category = {
-  id: string
-  name: string
+export const getUser = async () => {
+  const cookieStore = cookies()
+  const { data } = await api.get<User>("/user/me", {
+    headers: {
+      Cookie: (await cookieStore).toString(),
+    },
+  })
+  return data
 }
 
 export const fetchNotes = async (
@@ -28,16 +33,6 @@ export const fetchNotes = async (
     params,
     headers,
   })
-  return data
-}
-
-export const createNote = async (note: NewNoteData): Promise<Note> => {
-  const { data } = await api.post<Note>("/notes", note)
-  return data
-}
-
-export const deleteNote = async (id: number): Promise<Note> => {
-  const { data } = await api.delete<Note>(`/notes/${id}`)
   return data
 }
 

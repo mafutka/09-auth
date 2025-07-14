@@ -1,57 +1,47 @@
 "use client"
 
+import { useAuthStore } from "lib/store/userAuthStore"
+import { logout } from "lib/api/clientApi"
+import { useRouter } from "next/navigation"
 import css from "./AuthNavigation.module.css"
 import Link from "next/link"
 
-type Props = {
-  isAuthenticated: boolean
-  //   userEmail?: string
-  onLogout: () => void
-}
+export default function AuthNavigation() {
+  const router = useRouter()
 
-export default function AuthNavigation({ isAuthenticated, onLogout }: Props) {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
+  const user = useAuthStore((state) => state.user)
+  const clearIsAuthificated = useAuthStore((state) => state.clearIsAuthificated)
+
+  const handleLogout = async () => {
+    await logout()
+    clearIsAuthificated()
+    router.replace("/sign-in")
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <>
+        <li>
+          <Link href="/sign-in">Login</Link>
+        </li>
+        <li>
+          <Link href="/sign-up">Register</Link>
+        </li>
+      </>
+    )
+  }
   return (
-    <ul>
-      {isAuthenticated ? (
-        <>
-          <li className={css.navigationItem}>
-            <Link
-              href="/profile"
-              prefetch={false}
-              className={css.navigationLink}
-            >
-              Profile
-            </Link>
-          </li>
-          <li className={css.navigationItem}>
-            <button className={css.logoutButton} onClick={onLogout}>
-              Logout
-            </button>
-          </li>
-        </>
-      ) : (
-        <>
-          <li className={css.navigationItem}>
-            <Link
-              href="/sign-in"
-              prefetch={false}
-              className={css.navigationLink}
-            >
-              Login
-            </Link>
-          </li>
-
-          <li className={css.navigationItem}>
-            <Link
-              href="/sign-up"
-              prefetch={false}
-              className={css.navigationLink}
-            >
-              Register
-            </Link>
-          </li>
-        </>
-      )}
-    </ul>
+    <>
+      <li>
+        <Link href="/profile">profile</Link>
+      </li>
+      <li>
+        {user && <p>{user.username}</p>}
+        <button className={css.logoutButton} onClick={handleLogout}>
+          Logout
+        </button>
+      </li>
+    </>
   )
 }

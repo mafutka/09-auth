@@ -19,3 +19,8 @@ export type NewNoteData = {
   content: string
   tag: string
 }
+
+export type Category = {
+  id: string
+  name: string
+}
