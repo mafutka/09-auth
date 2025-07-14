@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
   const cookieStore = await cookies()
   const setCookie = apiRes.headers["set-cookie"] || apiRes.headers["Set-Cookie"]
-  console.log("📦 setCookie headers:", setCookie)
+  console.log("setCookie headers:", setCookie)
 
   if (setCookie) {
     const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie]

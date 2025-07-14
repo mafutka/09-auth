@@ -16,6 +16,9 @@ const Header = () => {
           <li>
             <Link href="/">Home</Link>
           </li>
+          <li>
+            <Link href="/profile">Profile</Link>
+          </li>
           <AuthNavigation
             isAuthenticated={false}
             // userEmail="user@example.com"
