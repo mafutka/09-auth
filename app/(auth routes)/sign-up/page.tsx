@@ -1,73 +1,82 @@
-// "use client"
+"use client"
 
-// // import { useState } from "react"
-// import { useRouter } from "next/navigation"
-// import { register } from "../../../lib/api/clientApi"
-// // import type { RegisterRequest } from "../../../types/user"
-// import { useAuthStore } from "../../../lib/store/userAuthStore"
-// // import css from "./SignUpPage.module.css"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { CreateUserData } from "../../../types/user"
+import { register } from "../../../lib/api/clientApi"
+import { useAuthStore } from "../../../lib/store/userAuthStore"
+import css from "./SignUpPage.module.css"
+import { Formik } from "formik"
+import { FormikHelpers } from "formik"
 
-// // export default function SignUpPage() {
-// //   const router = useRouter()
+const initialValues: CreateUserData = {
+  email: "",
+  password: "",
+}
 
-// //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-// //     e.preventDefault()
-// //     const formData = new FormData(e.currentTarget)
+export default function SignUp() {
+  const router = useRouter()
+  const setUser = useAuthStore((state) => state.setUser)
+  const [errorMessage, setErrorMessage] = useState("")
 
-// //     const payload: RegisterRequest = {
-// //       username: formData.get("username") as string,
-// //       email: formData.get("email") as string,
-// //       password: formData.get("password") as string,
-// //     }
+  const handleSubmit = async (
+    values: CreateUserData,
+    actions: FormikHelpers<CreateUserData>,
+  ) => {
+    try {
+      const user = await register(values)
+      setUser({ ...user, avatar: "" })
+      router.replace("/profile")
+      actions.resetForm()
+    } catch (error) {
+      setErrorMessage("Registration failed")
+      console.log(error)
+    }
+  }
+  return (
+    <main className={css.mainContent}>
+      <h1 className={css.formTitle}>Sign up</h1>
+      <Formik<CreateUserData>
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+      >
+        {({ handleChange, values }) => (
+          <form className={css.form}>
+            <div className={css.formGroup}>
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                className={css.input}
+                value={values.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-// //     try {
-// //       await register(payload)
-// //       router.push("/profile")
-// //     } catch (err) {
-// //       console.error("Registration error", err)
-// //       setError("Registration failed. Please try again.")
-//     }
-//   }
+            <div className={css.formGroup}>
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                className={css.input}
+                value={values.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-//   return (
-//     <main className={css.mainContent}>
-//       <h1 className={css.formTitle}>Sign up</h1>
-//       <form className={css.form} onSubmit={handleSubmit}>
-//         <div className={css.formGroup}>
-//           <label htmlFor="username">Name</label>
-//           <input id="username" name="username" className={css.input} required />
-//         </div>
-
-//         <div className={css.formGroup}>
-//           <label htmlFor="email">Email</label>
-//           <input
-//             id="email"
-//             type="email"
-//             name="email"
-//             className={css.input}
-//             required
-//           />
-//         </div>
-
-//         <div className={css.formGroup}>
-//           <label htmlFor="password">Password</label>
-//           <input
-//             id="password"
-//             type="password"
-//             name="password"
-//             className={css.input}
-//             required
-//           />
-//         </div>
-
-//         <div className={css.actions}>
-//           <button type="submit" className={css.submitButton}>
-//             Register
-//           </button>
-//         </div>
-
-//         {error && <p className={css.error}>{error}</p>}
-//       </form>
-//     </main>
-//   )
-// }
+            <div className={css.actions}>
+              <button type="submit" className={css.submitButton}>
+                Register
+              </button>
+            </div>
+            {errorMessage && <p className={css.error}>{errorMessage}</p>}
+          </form>
+        )}
+      </Formik>
+    </main>
+  )
+}
