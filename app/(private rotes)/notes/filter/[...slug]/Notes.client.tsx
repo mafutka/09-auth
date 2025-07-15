@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useQuery, keepPreviousData } from "@tanstack/react-query"
 import { useDebounce } from "use-debounce"
-import type { FetchNotesResponse } from "../../../../../lib/api/serverApi"
+import type { FetchNotesResponse } from "../../../../../types/note"
 import { fetchNotes } from "../../../../../lib/api/serverApi"
 import SearchBox from "../../../../../components/SearchBox/SearchBox"
 import NoteList from "../../../../../components/NoteList/NoteList"

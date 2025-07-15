@@ -36,11 +36,4 @@ export const deleteNote = async (id: number): Promise<Note> => {
   return data
 }
 
-// export const register = async (payload: CreateUserData) => {
-//   const res = await api.post<RegisteredUser>("/auth/register", payload)
-//   return res.data
-// }
-// export const Login = async (payload: LoginRequest): Promise<User> => {
-//   const { data } = await api.post<User>("/auth/login", payload)
-//   return data
-// }
+

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { api } from "../../api"
+import { nextServer as api } from "../../../../lib/api/api"
 import { cookies } from "next/headers"
 
 type Props = {
