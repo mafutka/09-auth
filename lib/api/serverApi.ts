@@ -45,3 +45,12 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
   })
   return data
 }
+
+export const checkSession = async () => {
+  const cookieStore = await cookies();
+  const response = await api.get<SessionResponseData>('/auth/session', {
+    headers: {
+      cookiStore.toString()
+    }
+  })
+}

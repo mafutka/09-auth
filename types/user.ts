@@ -13,6 +13,10 @@ export type CreateUserData = {
   name?: string
 }
 
+export interface SessionResponseData {
+  success: true;
+}
+
 // export interface RegisterRequest {
 
 //   username: string
