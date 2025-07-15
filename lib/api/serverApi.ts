@@ -1,4 +1,5 @@
 import type { Note, FetchNotesResponse } from "../../types/note"
+import {SessionResponseData} from "../../types/user"
 import type { User } from "../../types/user"
 import { cookies } from "next/headers"
 // import { CreateUserData} from
@@ -50,7 +51,8 @@ export const checkSession = async () => {
   const cookieStore = await cookies();
   const response = await api.get<SessionResponseData>('/auth/session', {
     headers: {
-      cookiStore.toString()
-    }
-  })
-}
+      Cookie: cookieStore.toString(), 
+    },
+  });
+  return response;
+};

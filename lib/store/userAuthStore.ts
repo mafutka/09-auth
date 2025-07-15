@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import { User } from "../../types/user"
 
 type AuthStore = {
@@ -8,17 +9,21 @@ type AuthStore = {
   clearIsAuthificated: () => void
 }
 
-export const useAuthStore = create<AuthStore>()((set) => {
-  return {
+export const useAuthStore = create<AuthStore>()(
+  persist(
+(set) => ({
     user: null,
     isAuthenticated: false,
-    setUser: (user) => set(() => ({ user: user, isAuthenticated: !!user })),
-    clearIsAuthificated: () =>
-      set(() => {
-        return {
-          user: null,
-          isAuthenticated: false,
-        }
-      }),
-  }
-})
+    setUser: (user:User) => {
+      set(()=>({user, isAuthenticated: true}))
+    },
+    clearIsAuthificated: () => {
+      set(()=> ({user: null, isAuthenticated: false}))
+    }
+}),
+{
+      name: "auth-storage", 
+    }
+
+  )
+)

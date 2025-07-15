@@ -1,5 +1,5 @@
 import type { User, RegisteredUser, CreateUserData } from "../../types/user"
-import type { Note, NewNoteData } from "../../types/note"
+import type { Note, NewNoteData, FetchNotesResponse } from "../../types/note"
 import { nextServer as api } from "./api"
 
 export const register = async (payload: CreateUserData) => {
@@ -23,6 +23,34 @@ export const getUser = async () => {
 
 export const editUser = async (updateUserData: RegisteredUser) => {
   const { data } = await api.patch<User>("/users/me", updateUserData)
+  return data
+}
+
+export const fetchNotes = async (
+  page = 1,
+  perPage = 12,
+  search = "",
+  tag = "",
+): Promise<FetchNotesResponse> => {
+  const params: Record<string, string | number> = { page, perPage }
+
+  if (search.trim() !== "") {
+    params.search = search.trim()
+  }
+
+  if (tag.trim().toLowerCase() !== "all" && tag.trim() !== "") {
+    params.tag = tag.trim()
+  }
+
+  const { data } = await api.get<FetchNotesResponse>("/notes", {
+    params,
+  })
+
+  return data
+}
+
+export const fetchNoteById = async (id: string): Promise<Note> => {
+  const { data } = await api.get<Note>(`/notes/${id}`)
   return data
 }
 

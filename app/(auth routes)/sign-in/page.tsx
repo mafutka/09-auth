@@ -1,6 +1,6 @@
 "use client"
-
 import { useRouter } from "next/navigation"
+import { useState  } from "react"
 import { login } from "../../../lib/api/clientApi"
 import { useAuthStore } from "lib/store/userAuthStore"
 import { CreateUserData } from "types/user"
@@ -9,28 +9,32 @@ import css from "./SignInPage.module.css"
 export default function SignIn() {
     const setUser = useAuthStore((state)=> state.setUser)
     const router = useRouter()
+    const [error, setError] = useState("");
+    console.log(error);
+    
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
-        const userData: CreateUserData = {
-            email,
-            password,
+    const handleSubmit = async (formData: FormData) => {
+const userData: CreateUserData = {
+            email: formData.get("email") as string,
+            password: formData.get("password") as string,
         };
+       
         try {
             const user = await login(userData);
-            setUser(user);
+            if (user) {
+              setUser(user);
             router.replace("/profile")
+            } else {
+           setError("Sign-in data is uncorrect")
+        }
         } catch(error) {
-            console.log(error);
-            
+          console.error(error);
+          setError("try again")
         }
     };
+
     return <main className={css.mainContent}>
- <form className={css.form} onSubmit={handleSubmit}>
+ <form className={css.form} action={handleSubmit}>
     <h1 className={css.formTitle}>Sign in</h1>
 
     <div className={css.formGroup}>
@@ -49,7 +53,6 @@ export default function SignIn() {
       </button>
     </div>
 
-    <p className={css.error}>Some error</p>
   </form>
 </main>
 }
