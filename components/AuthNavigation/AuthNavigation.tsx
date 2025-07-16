@@ -11,15 +11,15 @@ export default function AuthNavigation() {
 
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
   const user = useAuthStore((state) => state.user)
-  const clearIsAuthificated = useAuthStore((state) => state.clearIsAuthificated)
+  const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated)
 
   const handleLogout = async () => {
     await logout()
-    clearIsAuthificated()
+    clearIsAuthenticated()
     router.replace("/sign-in")
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return (
       <>
         <li className={css.navigationItem}>
@@ -39,7 +39,7 @@ export default function AuthNavigation() {
     <>
       <li className={css.navigationItem}>
         {user && <p>{user.username}</p>}
-        <p className={css.userEmail}>User email</p>
+        {user && <p className={css.userEmail}>{user.email}</p>}
         <button className={css.logoutButton} onClick={handleLogout}>
           Logout
         </button>

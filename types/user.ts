@@ -1,7 +1,6 @@
 export interface User {
   username: string
   email: string
-  password?: string
   avatar: string
 }
 
@@ -14,6 +13,7 @@ export type CreateUserData = {
 }
 
 export interface SessionResponseData {
+  message: string;
   success: true;
 }
 
