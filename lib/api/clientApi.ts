@@ -1,4 +1,4 @@
-import type { User, RegisteredUser, CreateUserData } from "../../types/user"
+import type { User, RegisteredUser, CreateUserData, SessionResponseData } from "../../types/user"
 import type { Note, NewNoteData, FetchNotesResponse } from "../../types/note"
 import { nextServer as api } from "./api"
 
@@ -24,6 +24,11 @@ export const getUser = async () => {
 export const editUser = async (updateUserData: RegisteredUser) => {
   const { data } = await api.patch<User>("/users/me", updateUserData)
   return data
+}
+
+export const checkSession = async () => {
+  const { data } = await api.get<SessionResponseData>("/auth/session")
+  return data;
 }
 
 export const fetchNotes = async (
