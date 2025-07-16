@@ -1,5 +1,4 @@
 "use client"
-
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CreateUserData } from "../../../types/user"
@@ -26,7 +25,7 @@ export default function SignUp() {
     try {
       const user = await register(values)
       setUser({ ...user, avatar: "" })
-      router.replace("/profile")
+      router.push("/sign-in")
       actions.resetForm()
     } catch (error) {
       setErrorMessage("Registration failed")
@@ -40,8 +39,8 @@ export default function SignUp() {
         initialValues={initialValues}
         onSubmit={handleSubmit}
       >
-        {({ handleChange, values }) => (
-          <form className={css.form}>
+        {({ handleChange, handleSubmit, values }) => (
+          <form className={css.form} onSubmit={handleSubmit}>
             <div className={css.formGroup}>
               <label htmlFor="email">Email</label>
               <input

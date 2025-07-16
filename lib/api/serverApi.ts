@@ -3,11 +3,11 @@ import {SessionResponseData} from "../../types/user"
 import type { User } from "../../types/user"
 import { cookies } from "next/headers"
 // import { CreateUserData} from
-import { nextServer as api } from "./api"
+import { nextServer } from "./api"
 
 export const getUser = async () => {
   const cookieStore = cookies()
-  const { data } = await api.get<User>("/user/me", {
+  const { data } = await nextServer.get<User>("/user/me", {
     headers: {
       Cookie: (await cookieStore).toString(),
     },
@@ -30,7 +30,7 @@ export const fetchNotes = async (
   if (tag.trim().toLowerCase() !== "all" && tag.trim() !== "") {
     params.tag = tag.trim()
   }
-  const { data } = await api.get<FetchNotesResponse>("/notes", {
+  const { data } = await nextServer.get<FetchNotesResponse>("/notes", {
     params,
     headers,
   })
@@ -39,7 +39,7 @@ export const fetchNotes = async (
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
   const cookieStore = await cookies()
-  const { data } = await api.get<Note>(`/notes/${id}`, {
+  const { data } = await nextServer.get<Note>(`/notes/${id}`, {
     headers: {
       Cookie: cookieStore.toString(),
     },
@@ -49,7 +49,7 @@ export const fetchNoteById = async (id: string): Promise<Note> => {
 
 export const checkSession = async () => {
   const cookieStore = await cookies();
-  const response = await api.get<SessionResponseData>('/auth/session', {
+  const response = await nextServer.get<SessionResponseData>('/auth/session', {
     headers: {
       Cookie: cookieStore.toString(), 
     },

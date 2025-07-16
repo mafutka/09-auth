@@ -1,34 +1,34 @@
 import type { User, RegisteredUser, CreateUserData, SessionResponseData } from "../../types/user"
 import type { Note, NewNoteData, FetchNotesResponse } from "../../types/note"
-import { nextServer as api } from "./api"
+import { nextServer } from "./api"
 
 export const register = async (payload: CreateUserData) => {
-  const { data } = await api.post<RegisteredUser>("/auth/register", payload)
-  return data
+  const response = await nextServer.post<RegisteredUser>("/auth/register", payload)
+  return response.data
 }
 
 export const login = async (payload: CreateUserData) => {
-  const { data } = await api.post<User>("/auth/login", payload)
-  return data
+  const response = await nextServer.post<User>("/auth/login", payload)
+  return response.data
 }
 
 export const logout = async () => {
-  await api.post("/auth/logout")
+  await nextServer.post("/auth/logout")
 }
 
 export const getUser = async () => {
-  const { data } = await api.get<User>("/users/me")
+  const { data } = await nextServer.get<User>("/users/me")
   return data
 }
 
 export const editUser = async (updateUserData: RegisteredUser) => {
-  const { data } = await api.patch<User>("/users/me", updateUserData)
-  return data
+  const response = await nextServer.patch<User>("/users/me", updateUserData)
+  return response.data
 }
 
 export const checkSession = async () => {
-  const { data } = await api.get<SessionResponseData>("/auth/session")
-  return data;
+  const response = await nextServer.get<SessionResponseData>("/auth/session")
+  return response.data;
 }
 
 export const fetchNotes = async (
@@ -47,7 +47,7 @@ export const fetchNotes = async (
     params.tag = tag.trim()
   }
 
-  const { data } = await api.get<FetchNotesResponse>("/notes", {
+  const { data } = await nextServer.get<FetchNotesResponse>("/notes", {
     params,
   })
 
@@ -55,17 +55,17 @@ export const fetchNotes = async (
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
-  const { data } = await api.get<Note>(`/notes/${id}`)
+  const { data } = await nextServer.get<Note>(`/notes/${id}`)
   return data
 }
 
 export const createNote = async (note: NewNoteData): Promise<Note> => {
-  const { data } = await api.post<Note>("/notes", note)
+  const { data } = await nextServer.post<Note>("/notes", note)
   return data
 }
 
 export const deleteNote = async (id: number): Promise<Note> => {
-  const { data } = await api.delete<Note>(`/notes/${id}`)
+  const { data } = await nextServer.delete<Note>(`/notes/${id}`)
   return data
 }
 

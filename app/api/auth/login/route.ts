@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { nextServer as api } from "../../../../lib/api/api"
+import { api } from "../api"
 import { cookies } from "next/headers"
 import { parse } from "cookie"
 

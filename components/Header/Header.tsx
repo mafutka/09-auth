@@ -4,12 +4,9 @@ import css from "./Header.module.css"
 import Link from "next/link"
 import TagsMenu from "../TagsMenu/TagsMenu"
 import AuthNavigation  from "../AuthNavigation/AuthNavigation"
-import { useAuthStore } from "../../lib/store/userAuthStore"
+
 
 const Header = () => {
-const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
-const user = useAuthStore((state) => state.user)
-const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated)
 
   return (
     <header className={css.header}>
@@ -25,12 +22,8 @@ const clearIsAuthenticated = useAuthStore((state) => state.clearIsAuthenticated)
           <li>
             <Link href="/profile">Profile</Link>
           </li>
-          <li>
          <AuthNavigation />
-</li>
-<li>
-          <TagsMenu />
-          </li>
+          <TagsMenu />   
         </ul>
       </nav>
       </div>
