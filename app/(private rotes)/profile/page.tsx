@@ -1,6 +1,8 @@
+
 import { getUser } from "../../../lib/api/serverApi"
 import css from "./ProfilePage.module.css"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 export const metadata = {
   title: "Profile | NoteHub",
@@ -13,7 +15,12 @@ export const metadata = {
 }
 
 export default async function Profile() {
-  const user = await getUser();
+  let user = null
+  try {
+    user = await getUser()
+  } catch {
+    redirect('/sign-in')
+  }
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>

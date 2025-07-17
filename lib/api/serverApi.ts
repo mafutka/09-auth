@@ -8,8 +8,8 @@ import { nextServer } from "./api"
 export const getUser = async () => {
   const cookieStore = cookies()
   const { data } = await nextServer.get<User>("/user/me", {
-    headers: {
-      Cookie: (await cookieStore).toString(),
+     headers: {
+      Cookie: cookieStore.toString(),
     },
   })
   return data

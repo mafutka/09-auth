@@ -17,8 +17,8 @@ export const logout = async () => {
 }
 
 export const getUser = async () => {
-  const { data } = await nextServer.get<User>("/users/me")
-  return data
+  const response = await nextServer.get<User>("/users/me")
+  return response.data
 }
 
 export const editUser = async (updateUserData: RegisteredUser) => {
@@ -49,6 +49,7 @@ export const fetchNotes = async (
 
   const { data } = await nextServer.get<FetchNotesResponse>("/notes", {
     params,
+    withCredentials: true,
   })
 
   return data
