@@ -15,19 +15,14 @@ const clearIsAuthenticated = useAuthStore((state)=>state.clearIsAuthenticated)
 
 useEffect(()=> {
     const fetchUser = async () => {
-        try {
-            const response = await checkSession();
-            if (response.success) {
-                const user = await getUser();
-                if (user) setUser(user)
-            } else {
-        clearIsAuthenticated()
-    }
-    }
-    catch (error) {
-clearIsAuthenticated();
-console.error("Authentification failed", error)
-    }     
+          const isAuthenticated = await checkSession();
+      if (!isAuthenticated) {
+        clearIsAuthenticated();
+        return;
+      } else {
+        const user = await getUser();
+        if (user) setUser(user);
+      }
     }
     fetchUser()
 }, [setUser, clearIsAuthenticated]);

@@ -6,10 +6,10 @@ import { redirect } from "next/navigation"
 
 export const metadata = {
   title: "Profile | NoteHub",
-  description: "View and manage your profile on NoteHub",
+  description: "profile changes on NoteHub",
   openGraph: {
     title: "Profile | NoteHub",
-    description: "Manage your profile and preferences.",
+    description: "profile and preferences.",
     url: "/",
   },
 }
@@ -21,7 +21,6 @@ export default async function Profile() {
     if (!user) throw new Error("No user");
   } catch {
     redirect('/sign-in')
-    return null 
   }
   return (
     <main className={css.mainContent}>

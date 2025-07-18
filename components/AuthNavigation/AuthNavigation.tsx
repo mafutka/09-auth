@@ -38,7 +38,7 @@ export default function AuthNavigation() {
   return (
     <>
       <li className={css.navigationItem}>
-        {/* {user && <p>{user.username}</p>} */}
+        {user && <p>{user.username}</p>}
         {user && <p className={css.userEmail}>{user.email}</p>}
         <button className={css.logoutButton} onClick={handleLogout}>
           Logout
