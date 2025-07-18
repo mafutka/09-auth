@@ -1,6 +1,16 @@
 import Link from "next/link"
 import css from "./SidebarNotes.module.css"
-import { tags } from "../../../../constants/constants"
+
+
+const tags: string[] = [
+  "All",
+  "Work",
+  "Personal",
+  "Shopping",
+  "Todo",
+];
+
+
 
 export default function SidebarNotes() {
   return (

@@ -1,51 +1,31 @@
+'use client';
 
-import { getUser } from "../../../lib/api/serverApi"
-import css from "./ProfilePage.module.css"
-import Link from "next/link"
-import { redirect } from "next/navigation"
+import { useAuthStore } from "../../../lib/store/authStore";
+import Link from "next/link";
+import css from "./ProfilePage.module.css";
 
-export const metadata = {
-  title: "Profile | NoteHub",
-  description: "profile changes on NoteHub",
-  openGraph: {
-    title: "Profile | NoteHub",
-    description: "profile and preferences.",
-    url: "/",
-  },
-}
+export default function Profile() {
+  const user = useAuthStore((state) => state.user);
 
-export default async function Profile() {
-  let user = null
-  try {
-    user = await getUser()
-    if (!user) throw new Error("No user");
-  } catch {
-    redirect('/sign-in')
+  if (!user) {
+    return <p>Loading user...</p>; 
   }
+
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
         <div className={css.header}>
           <h1 className={css.formTitle}>Profile Page</h1>
-            {JSON.stringify(user)}
+          <pre>{JSON.stringify(user, null, 2)}</pre>
           <Link href="/profile/edit" className={css.editProfileButton}>
             Edit Profile
           </Link>
         </div>
-        {/* <div className={css.avatarWrapper}>
-      <img
-        src="Avatar"
-        alt="User Avatar"
-        width={120}
-        height={120}
-        className={css.avatar}
-      />
-    </div> */}
         <div className={css.profileInfo}>
           <p>Username: {user?.username || "your_username"}</p>
           <p>Email: {user?.email || "your_email@example.com"}</p>
         </div>
       </div>
     </main>
-  )
+  );
 }

@@ -17,7 +17,7 @@ export const logout = async () => {
 }
 
 export const getUser = async () => {
-  const response = await nextServer.get<User>("/users/me")
+  const response = await nextServer.get<User>("/users/me", { withCredentials: true })
   return response.data
 }
 
@@ -27,9 +27,13 @@ export const editUser = async (updateUserData: RegisteredUser) => {
 }
 
 export const checkSession = async () => {
-  const response = await nextServer.get<SessionResponseData>("/auth/session")
-  return response.data;
-}
+  try {
+    const response = await nextServer.get<SessionResponseData>("/auth/session")
+    return response.data;
+  } catch {
+    throw new Error("Session invalid");
+  }
+};
 
 export const fetchNotes = async (
   page = 1,
@@ -49,7 +53,7 @@ export const fetchNotes = async (
 
   const { data } = await nextServer.get<FetchNotesResponse>("/notes", {
     params,
-    withCredentials: true,
+    // withCredentials: true,
   })
 
   return data

@@ -41,15 +41,24 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+let isValidSession = false;
 
-  if (accessToken) {
-    
-    if (isAuthRoute) {
-      return NextResponse.redirect(new URL('/profile', request.url));
+if (accessToken) {
+  try {
+    const response = await checkSession();
+    if (response.status === 200) {
+      isValidSession = true;
     }
-
-    return NextResponse.next();
+  } catch  {
+    isValidSession = false;
   }
+}
+if (isValidSession) {
+  if (isAuthRoute) {
+    return NextResponse.redirect(new URL('/profile', request.url));
+  }
+  return NextResponse.next();
+}
 
   if (isPrivateRoute) {
     return NextResponse.redirect(new URL('/sign-in', request.url));

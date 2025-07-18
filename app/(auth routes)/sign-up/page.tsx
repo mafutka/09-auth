@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { CreateUserData } from "../../../types/user"
 import { register } from "../../../lib/api/clientApi"
-import { useAuthStore } from "../../../lib/store/userAuthStore"
+import { useAuthStore } from "../../../lib/store/authStore"
 import css from "./SignUpPage.module.css"
 import { Formik } from "formik"
 

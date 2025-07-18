@@ -34,5 +34,4 @@ const CreateNote = () => {
 
 export default CreateNote
 
-// В об'єкті openGraph відсутня обов'язкова властивість url,
-//  яка має визначати канонічну URL-адресу сторінки створення замітки.
+
