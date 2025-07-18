@@ -18,8 +18,10 @@ export default async function Profile() {
   let user = null
   try {
     user = await getUser()
+    if (!user) throw new Error("No user");
   } catch {
     redirect('/sign-in')
+    return null 
   }
   return (
     <main className={css.mainContent}>

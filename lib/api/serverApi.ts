@@ -7,12 +7,21 @@ import { nextServer } from "./api"
 
 export const getUser = async () => {
   const cookieStore = cookies()
-  const { data } = await nextServer.get<User>("/user/me", {
-     headers: {
-      Cookie: cookieStore.toString(),
-    },
-  })
-  return data
+  console.log("🔍 [getUser] Cookie headers:", cookieStore.toString())
+
+  try {
+    const { data } = await nextServer.get<User>("/users/me", {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    })
+
+    console.log("[getUser] Received user:", data)
+    return data
+  } catch (err) {
+    console.error("[getUser] Failed to fetch user", err)
+    throw new Error("Unauthorized")
+  }
 }
 
 export const fetchNotes = async (

@@ -6,39 +6,34 @@ import { register } from "../../../lib/api/clientApi"
 import { useAuthStore } from "../../../lib/store/userAuthStore"
 import css from "./SignUpPage.module.css"
 import { Formik } from "formik"
-import { FormikHelpers } from "formik"
+
 
 const initialValues: CreateUserData = {
   email: "",
   password: "",
 }
 
-export default function SignUp() {
+export default function SignUpPage() {
   const router = useRouter()
   const setUser = useAuthStore((state) => state.setUser)
-  const [errorMessage, setErrorMessage] = useState("")
+  const [error, setError] = useState("")
 
-  const handleSubmit = async (
-    values: CreateUserData,
-    actions: FormikHelpers<CreateUserData>,
-  ) => {
+  const handleSubmit = async ( values: CreateUserData) => {
     try {
       const user = await register(values)
       setUser({ ...user, avatar: "" })
-      router.push("/sign-in")
-      actions.resetForm()
-    } catch (error) {
-      setErrorMessage("Registration failed")
-      console.log(error)
+      router.push("/profile")
+    } catch (e) {
+      console.error("Registration failed", e)
+      setError("Registration failed")
+      
     }
   }
+
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
-      <Formik<CreateUserData>
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ handleChange, handleSubmit, values }) => (
           <form className={css.form} onSubmit={handleSubmit}>
             <div className={css.formGroup}>
@@ -72,7 +67,7 @@ export default function SignUp() {
                 Register
               </button>
             </div>
-            {errorMessage && <p className={css.error}>{errorMessage}</p>}
+            {error && <p className={css.error}>{error}</p>}
           </form>
         )}
       </Formik>
