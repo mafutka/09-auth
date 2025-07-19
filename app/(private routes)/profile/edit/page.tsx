@@ -1,50 +1,50 @@
-"use client"
+"use client";
 
-import { useRouter } from "next/router"
-import {getUser, editUser} from "../../../../lib/api/clientApi"
 import { useEffect, useState } from "react";
-import { useAuthStore } from "lib/store/authStore";
-import css from "./EditProfilePage.module.css"
+import { useRouter } from "next/navigation";
+import { getUser, editUser } from "../../../../lib/api/clientApi";
+import { useAuthStore } from "../../../../lib/store/authStore";
+import css from "./EditProfile.module.css";
 
+const EditProfile = () => {
+  const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
-export default function EditProfile() {
+  const [loading, setLoading] = useState(true);
 
-const router = useRouter();
-const [username, setUsername] = useState("");
-const [email, setEmail] = useState("");
-const [loading, setLoading] = useState(true);
+  const setUser = useAuthStore((state) => state.setUser);
 
-const setUser = useAuthStore((state) => state.setUser);
-
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      const user = await getUser();
-      if (user) {
-        setUsername(user.username || "")
-        setEmail(user.email)
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUser();
+        if (user) {
+          setUsername(user.username || "");
+          setEmail(user.email);
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false)
-    }
-  }
- fetchUser()
-}, [])
+    };
 
-const handleSubmit = async (e: React.FormEvent) => {
+    fetchUser();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const data = await editUser({ username, email });
+    const data = await editUser({ username });
     if (data) {
       setUser(data);
       router.push("/profile");
     }
   };
 
-   const handleCancel = () => router.back();
+  const handleCancel = () => router.back();
 
   if (loading) return <p>Loading...</p>;
 
-   return (
+  return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
         <h1 className={css.formTitle}>Edit Profile</h1>
@@ -80,4 +80,6 @@ const handleSubmit = async (e: React.FormEvent) => {
     </main>
   );
 };
+
+export default EditProfile;
 

@@ -21,8 +21,8 @@ export const getUser = async () => {
   return response.data
 }
 
-export const editUser = async (updateUserData: RegisteredUser) => {
-  const response = await nextServer.patch<User>("/users/me", updateUserData)
+export const editUser = async (data: { username: string }) => {
+  const response = await nextServer.patch<User>("/users/me", data)
   return response.data
 }
 
