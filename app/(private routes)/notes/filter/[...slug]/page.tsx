@@ -3,7 +3,7 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query"
-import { fetchNotes } from "../../../../../lib/api/serverApi"
+import { fetchNotesServer } from "../../../../../lib/api/serverApi"
 import NotesClient from "./Notes.client"
 
 import type { Metadata } from "next"
@@ -43,7 +43,7 @@ export default async function NotesPage({ params }: Props) {
   const rawTag = slug?.[0] || ""
   const tag = rawTag.toLowerCase() === "all" ? "" : rawTag
 
-  const data = await fetchNotes(1, 12, "", tag)
+  const data = await fetchNotesServer(1, 12, "", tag)
 
   await queryClient.prefetchQuery({
     queryKey: ["notes", 1, "", tag],

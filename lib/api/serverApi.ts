@@ -16,7 +16,7 @@ export const getUser = async () => {
   return response.data;
 };
 
-export const fetchNotes = async (
+export const fetchNotesServer = async (
   page = 1,
   perPage = 12,
   search = "",
@@ -31,11 +31,11 @@ export const fetchNotes = async (
   if (tag.trim().toLowerCase() !== "all" && tag.trim() !== "") {
     params.tag = tag.trim()
   }
-  const { data } = await nextServer.get<FetchNotesResponse>("/notes", {
+  const response = await nextServer.get<FetchNotesResponse>("/notes", {
     params,
     headers,
   })
-  return data
+  return response.data
 }
 
 export const fetchNoteById = async (id: string): Promise<Note> => {
