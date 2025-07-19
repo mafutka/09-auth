@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUser, editUser } from "../../../../lib/api/clientApi";
 import { useAuthStore } from "../../../../lib/store/authStore";
-import css from "./EditProfile.module.css";
+import css from "./EditProfilePage.module.css";
 
 const EditProfile = () => {
   const router = useRouter();
