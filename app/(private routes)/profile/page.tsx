@@ -30,7 +30,7 @@ const Profile = async () => {
       <div className={css.profileCard}>
         <div className={css.header}>
           <h1 className={css.formTitle}>Profile Page</h1>
-          <pre>{JSON.stringify(user, null, 2)}</pre>
+         
           <Link href="/profile/edit" className={css.editProfileButton}>
             Edit Profile
           </Link>
