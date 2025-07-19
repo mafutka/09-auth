@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "404 - Page Not Found",
     description: "Sorry, the page you are looking for does not exist.",
-    url: "https://notehub-public.goit.study/not-found", // або свій домен
+    url: "https://notehub.com/404", 
     images: [
       {
         url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
